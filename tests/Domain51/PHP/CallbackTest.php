@@ -1,16 +1,16 @@
 <?php
 
-require_once dirname(__FILE__) . '/../bootstrap.php';
-require_once 'PHP/Callback.php';
+require_once dirname(__FILE__) . '/../../bootstrap.php';
+require_once 'Domain51/PHP/Callback.php';
 
-class PHP_CallbackTest extends UnitTestCase 
+class Domain51_PHP_CallbackTest extends UnitTestCase 
 {
 	public function testThrowsExceptionOnNonValidCallback() {
 		$callback = $this;
 		try {
-			$obj = new PHP_Callback($callback);
+			$obj = new Domain51_PHP_Callback($callback);
 			$this->fail('Exception not caught');
-		} catch (PHP_Callback_Exception $e) {
+		} catch (Domain51_PHP_Callback_Exception $e) {
 			$this->assertEqual('Non-valid callback provided', $e->getMessage());
 		} catch(Exception $e) {
 			$this->fail('Wrong exception caught?');
@@ -23,13 +23,13 @@ class PHP_CallbackTest extends UnitTestCase
 
 	public function testExecuteReturnsCallbacksResult() {
 		$callback = array($this, 'returnHelloWorld');
-		$obj = new PHP_Callback($callback);
+		$obj = new Domain51_PHP_Callback($callback);
 		
 		$this->assertEqual($this->returnHelloWorld(), $obj->execute());
 	}
 
 	public function testExecuteTakesAVariableNumberOfParameters() {
-		$callback = new PHP_Callback('strtolower');
+		$callback = new Domain51_PHP_Callback('strtolower');
 
 		$this->assertEqual(
 			strtolower($this->returnHelloWorld()),
@@ -41,7 +41,7 @@ class PHP_CallbackTest extends UnitTestCase
 	 * @todo determine if tests after this point are necessary or feature bloat?
 	 */
 	public function testAllowsSettingOfParametersToUseInExecute() {
-		$callback = new PHP_Callback('strtolower');
+		$callback = new Domain51_PHP_Callback('strtolower');
 		$callback->addParameter($this->returnHelloWorld());
 
 		$this->assertEqual(
@@ -55,7 +55,7 @@ class PHP_CallbackTest extends UnitTestCase
 	}
 
 	public function testParametersProvidedToExecuteReceivePriority() {
-		$callback = new PHP_Callback('strtolower');
+		$callback = new Domain51_PHP_Callback('strtolower');
 		$callback->addParameter($this->returnHelloWorld());
 		
 		$this->assertNotEqual(
@@ -70,7 +70,7 @@ class PHP_CallbackTest extends UnitTestCase
 	}
 
 	public function testCanResetParameters() {
-		$callback = new PHP_Callback('strtolower');
+		$callback = new Domain51_PHP_Callback('strtolower');
 		$callback->addParameter($this->returnHelloWorld());
 		
 		$this->assertEqual(
@@ -90,12 +90,12 @@ class PHP_CallbackTest extends UnitTestCase
 
 	public function testCanAcceptTwoParametersForObjectCallback() {
 		try {
-			$callback = new PHP_Callback($this, 'returnHelloWorld');
+			$callback = new Domain51_PHP_Callback($this, 'returnHelloWorld');
 			$this->assertEqual(
 				$this->returnHelloWorld(),
 				$callback->execute()
 			);
-		} catch (PHP_Callback_Exception $e) {
+		} catch (Domain51_PHP_Callback_Exception $e) {
 			$this->fail('Unexpected non-valid callback exception caught');
 		} catch (Exception $e) {
 			// this should never run
@@ -105,9 +105,9 @@ class PHP_CallbackTest extends UnitTestCase
 
 	public function testExceptionsCauseAreTheArgumentsProvidedToConstruct() {
 		try {
-			$callback = new PHP_Callback($this);
+			$callback = new Domain51_PHP_Callback($this);
 			$this->fail('Exception not caught');
-		} catch (PHP_Callback_Exception $e) {
+		} catch (Domain51_PHP_Callback_Exception $e) {
 			$this->assertEqual(
 				array($this),
 				$e->getCause()
@@ -116,7 +116,7 @@ class PHP_CallbackTest extends UnitTestCase
 	}
 
 	public function testParametersCanBeAddedByReference() {
-		$callback = new PHP_Callback('strtolower');
+		$callback = new Domain51_PHP_Callback('strtolower');
 		$hello = $this->returnHelloWorld();
 		$callback->addParameterByRef($hello);
 		$hello = 'Hola World!';
@@ -128,7 +128,7 @@ class PHP_CallbackTest extends UnitTestCase
 	}
 
 	public function testCanBeSerializedThenUnserializedForReuse() {
-		$callback = new PHP_Callback($this, 'returnHelloWorld');
+		$callback = new Domain51_PHP_Callback($this, 'returnHelloWorld');
 		$serialized = serialize($callback);
 		$unserialized = unserialize($serialized);
 		$this->assertEqual(
@@ -140,7 +140,7 @@ class PHP_CallbackTest extends UnitTestCase
     public function testCallbackAnswersWhatItIsWithTrueOrFalseTakingParametersAsConstruct() {
         $func = (bool)rand(0, 1) ? 'strtolower' : 'strtoupper';
 
-        $callback = new PHP_Callback($func);
+        $callback = new Domain51_PHP_Callback($func);
         if ($func == 'strtoupper') {
             $this->assertTrue($callback->is('strtoupper'));
             $this->assertFalse($callback->is('strtolower'));
@@ -151,26 +151,26 @@ class PHP_CallbackTest extends UnitTestCase
 
         unset($callback);
 
-        $callback = new PHP_Callback(array($this, 'returnHelloWorld'));
+        $callback = new Domain51_PHP_Callback(array($this, 'returnHelloWorld'));
         $this->assertTrue($callback->is(array($this, 'returnHelloWorld')));
         $this->assertTrue($callback->is($this, 'returnHelloWorld'));
         $this->assertFalse($callback->is(__CLASS__, 'returnHelloWorld'));
 
         unset($callback);
 
-        $callback = new PHP_Callback(__CLASS__, 'returnHelloWorld');
+        $callback = new Domain51_PHP_Callback(__CLASS__, 'returnHelloWorld');
         $this->assertTrue($callback->is(__CLASS__, 'returnHelloWorld'));
         $this->assertTrue($callback->is(array(__CLASS__, 'returnHelloWorld')));
         $this->assertFalse($callback->is($this, 'returnHelloWorld'));
     }
 
     public function testCallbackAnswerDoesImplementDependAsAnInstanceof() {
-        $callback = new PHP_Callback('strtolower');
+        $callback = new Domain51_PHP_Callback('strtolower');
         $this->assertFalse($callback->doesImplement(__CLASS__));
 
         unset($callback);
 
-        $callback = new PHP_Callback($this, 'returnHelloWorld');
+        $callback = new Domain51_PHP_Callback($this, 'returnHelloWorld');
         $this->assertTrue($callback->doesImplement(__CLASS__));
         $this->assertTrue($callback->doesImplement('UnitTestCase'));
         $this->assertFalse($callback->doesImplement('PDO'));
@@ -179,53 +179,53 @@ class PHP_CallbackTest extends UnitTestCase
 
         unset($callback);
 
-        $callback = new PHP_Callback(__CLASS__, 'returnHelloWorld');
+        $callback = new Domain51_PHP_Callback(__CLASS__, 'returnHelloWorld');
         $this->assertTrue($callback->doesImplement(__CLASS__));
     }
 
     public function testAnswersIfThisIsAFunction() {
-        $callback = new PHP_Callback('strtolower');
+        $callback = new Domain51_PHP_Callback('strtolower');
         $this->assertTrue($callback->isFunction());
 
         unset($callback);
 
-        $callback = new PHP_Callback($this, 'returnHelloWorld');
+        $callback = new Domain51_PHP_Callback($this, 'returnHelloWorld');
         $this->assertFalse($callback->isFunction());
     }
 
     public function testAnswersIfThisIsAStaticCallback() {
-        $callback = new PHP_Callback(__CLASS__, 'returnHelloWorld');
+        $callback = new Domain51_PHP_Callback(__CLASS__, 'returnHelloWorld');
         $this->assertTrue($callback->isStatic());
 
         unset($callback);
 
-        $callback = new PHP_Callback($this, 'returnHelloWorld');
+        $callback = new Domain51_PHP_Callback($this, 'returnHelloWorld');
         $this->assertFalse($callback->isStatic());
 
         unset($callback);
 
-        $callback = new PHP_Callback('strtolower');
+        $callback = new Domain51_PHP_Callback('strtolower');
         $this->assertFalse($callback->isStatic());
     }
 
     public function testAnswersIfThisIsAnObjectCallback() {
-        $callback = new PHP_Callback(__CLASS__, 'returnHelloWorld');
+        $callback = new Domain51_PHP_Callback(__CLASS__, 'returnHelloWorld');
         $this->assertTrue($callback->isObject());
 
         unset($callback);
 
-        $callback = new PHP_Callback($this, 'returnHelloWorld');
+        $callback = new Domain51_PHP_Callback($this, 'returnHelloWorld');
         $this->assertTrue($callback->isObject());
 
         unset($callback);
 
-        $callback = new PHP_Callback('strtolower');
+        $callback = new Domain51_PHP_Callback('strtolower');
         $this->assertFalse($callback->isObject());
     }
 
     public function testProvidesAReadOnlyCallbackProperty() {
         $func = rand(0, 1) ? 'strtolower' : 'strtoupper';
-        $callback = new PHP_Callback($func);
+        $callback = new Domain51_PHP_Callback($func);
         $this->assertEqual(
             $func,
             $callback->callback
@@ -239,7 +239,7 @@ class PHP_CallbackTest extends UnitTestCase
         try {
             $callback->callback = 'strtoupper';
             $this->fail('Exception not caught');
-        } catch (PHP_Callback_Exception $e) {
+        } catch (Domain51_PHP_Callback_Exception $e) {
             $this->pass('Exception caught');
         }
 
@@ -251,7 +251,7 @@ class PHP_CallbackTest extends UnitTestCase
                 $callback->unknownProperty,
                 'Unknown property correctly not set'
             );
-        } catch (PHP_Callback_Exception $e) {
+        } catch (Domain51_PHP_Callback_Exception $e) {
             $this->fail('Unexpected exception caught');
         }
     }

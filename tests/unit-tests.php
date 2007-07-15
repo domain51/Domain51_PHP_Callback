@@ -6,6 +6,6 @@ class Domain51_PHP_CallbackTestSuite extends TestSuite
 {
     public function __construct() 
     {
-        $this->addTestFile('PHP/CallbackTest.php');
+        $this->addTestFile('Domain51/PHP/CallbackTest.php');
     }
 }
