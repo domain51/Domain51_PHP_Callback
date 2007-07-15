@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This file contains the {@link PHP_Callback_Exception} class
+ * This file contains the {@link Domain51_PHP_Callback_Exception} class
  *
  * PHP Version 5
  *
@@ -21,7 +21,7 @@
  *
  *
  * @category PHP
- * @package PHP_Callback
+ * @package Domain51_PHP_Callback
  * @author Travis Swicegood <development [at] domain51 [dot] com>
  * @copyright 2007 Domain51
  * @license http://www.gnu.org/licenses/lgpl.html LGPL
@@ -35,10 +35,10 @@
  */
 require_once 'PEAR/Exception.php';
 /**
- * Provides a PHP_Callback specific exception
+ * Provides a Domain51_PHP_Callback specific exception
  *
  * @category PHP
- * @package PHP_Callback
+ * @package Domain51_PHP_Callback
  * @author Travis Swicegood <development [at] domain51 [dot] com>
  * @version Release: @@VERSION@@
  * @copyright 2007 Domain51
@@ -46,7 +46,7 @@ require_once 'PEAR/Exception.php';
  * @since Class available since v0.0.1
  *
  */
-class PHP_Callback_Exception extends PEAR_Exception
+class Domain51_PHP_Callback_Exception extends PEAR_Exception
 {
 
 }

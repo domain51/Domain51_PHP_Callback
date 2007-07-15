@@ -1,6 +1,6 @@
 <?php
 /**
- * This file contains the {@link PHP_Callback} class
+ * This file contains the {@link Domain51_PHP_Callback} class
  *
  * PHP Version 5
  *
@@ -20,7 +20,7 @@
  *
  *
  * @category PHP
- * @package PHP_Callback
+ * @package Domain51_PHP_Callback
  * @author Travis Swicegood <development [at] domain51 [dot] com>
  * @copyright 2007 Domain51
  * @license http://www.gnu.org/licenses/lgpl.html LGPL
@@ -32,7 +32,7 @@
  * Load exception
  * @ignore
  */
-require_once 'PHP/Callback/Exception.php';
+require_once 'Domain51/PHP/Callback/Exception.php';
 
 /**
  * A Value object representing the callback pseudo-type
@@ -45,14 +45,14 @@ require_once 'PHP/Callback/Exception.php';
  * another method:
  *
  * <code>
- *     function dependsOnValidCallback(PHP_Callback $callback) { ... }
+ *     function dependsOnValidCallback(Domain51_PHP_Callback $callback) { ... }
  * </code>
  *
  * It can also be wrapped to provide validation of parameters of a given
  * callback:
  *
  * <code>
- *     class PHP_Callback_WithArguments
+ *     class Domain51_PHP_Callback_WithArguments
  *     {
  *         private $callback = null;
  *         private $string = '';
@@ -60,10 +60,10 @@ require_once 'PHP/Callback/Exception.php';
  *         public function __construct($callback, $foo) 
  *         {
  *             if (!is_string($foo)) {
- *                 throw new PHP_Callback_Exception('Parameter should be a string');
+ *                 throw new Domain51_PHP_Callback_Exception('Parameter should be a string');
  *             }
  *
- *             $this->_callback = new PHP_Callback($callback);
+ *             $this->_callback = new Domain51_PHP_Callback($callback);
  *             $this->string = $foo;
  *         }
  *         
@@ -76,7 +76,7 @@ require_once 'PHP/Callback/Exception.php';
  *
  *
  * @category PHP
- * @package PHP_Callback
+ * @package Domain51_PHP_Callback
  * @author Travis Swicegood <development [at] domain51 [dot] com>
  * @version Release: @@VERSION@@
  * @copyright 2007 Domain51
@@ -84,7 +84,7 @@ require_once 'PHP/Callback/Exception.php';
  * @since Class available since v0.0.1
  *
  */
-class PHP_Callback 
+class Domain51_PHP_Callback 
 {
     private $parameters = array();
 
@@ -96,13 +96,13 @@ class PHP_Callback
 
     /**
      * Supported signatures:
-     *  PHP_Callback('function');
-     *  PHP_Callback(array($obj, 'method'));
-     *  PHP_Callback(array('Object', 'method'));
-     *  PHP_Callback($obj, 'method');
-     *  PHP_Callback('Object', 'method');
+     *  Domain51_PHP_Callback('function');
+     *  Domain51_PHP_Callback(array($obj, 'method'));
+     *  Domain51_PHP_Callback(array('Object', 'method'));
+     *  Domain51_PHP_Callback($obj, 'method');
+     *  Domain51_PHP_Callback('Object', 'method');
      *
-     * @throws PHP_Callback_Exception On invalid callback
+     * @throws Domain51_PHP_Callback_Exception On invalid callback
      */
     public function __construct($callback, $p2 = null) 
     {
@@ -111,7 +111,7 @@ class PHP_Callback
         }
         if (!is_callable($callback)) {
             $args = func_get_args();
-            throw new PHP_Callback_Exception('Non-valid callback provided', $args);
+            throw new Domain51_PHP_Callback_Exception('Non-valid callback provided', $args);
         }
 
         $this->_callback = $callback;
@@ -135,7 +135,7 @@ class PHP_Callback
     /**
      * Protects read-only callback property
      *
-     * If $key is "callback", this will throw a {@link PHP_Callback_Exception},
+     * If $key is "callback", this will throw a {@link Domain51_PHP_Callback_Exception},
      * otherwise this method does nothing.
      *
      * @param string $key
@@ -144,7 +144,7 @@ class PHP_Callback
     public function __set($key, $value)
     {
         if ($key == 'callback') {
-            throw new PHP_Callback_Exception(
+            throw new Domain51_PHP_Callback_Exception(
                 'Attempted to change read-only callback property', 
                 array($key, $value)
             );
@@ -205,11 +205,11 @@ class PHP_Callback
      * Returns true if the callback provided matches the callback that this represents
      *
      * Supported signatures:
-     *  PHP_Callback->is('function');
-     *  PHP_Callback->is(array($obj, 'method'));
-     *  PHP_Callback->is(array('Object', 'method'));
-     *  PHP_Callback->is($object, 'method');
-     *  PHP_Callback->is('Class', 'method');
+     *  Domain51_PHP_Callback->is('function');
+     *  Domain51_PHP_Callback->is(array($obj, 'method'));
+     *  Domain51_PHP_Callback->is(array('Object', 'method'));
+     *  Domain51_PHP_Callback->is($object, 'method');
+     *  Domain51_PHP_Callback->is('Class', 'method');
      *
      * @return bool
      */
